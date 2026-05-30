@@ -131,6 +131,49 @@ nav#navbar{
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:8px;}
 .hamburger span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all .3s;}
 
+/* Mobile search button */
+.mob-search-btn{
+  display:none;
+  width:40px;height:40px;background:none;border:none;
+  align-items:center;justify-content:center;
+  color:var(--text-2);transition:color .25s;
+}
+.mob-search-btn:hover{color:var(--ink);}
+
+/* Mobile search overlay */
+#mobile-search-overlay{
+  display:none;
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.5);
+  align-items:flex-start;
+  padding-top:0;
+}
+#mobile-search-overlay.open{display:flex;}
+.mob-search-box{
+  width:100%;background:#fff;
+  padding:16px 16px;
+  display:flex;align-items:center;gap:12px;
+  border-bottom:2px solid var(--gold);
+}
+.mob-search-box input{
+  flex:1;border:none;outline:none;
+  font-size:16px;font-family:'DM Sans',sans-serif;
+  color:var(--text);
+  background:transparent;
+}
+.mob-search-box input::placeholder{color:var(--text-3);}
+.mob-search-close{
+  background:none;border:none;font-size:24px;color:var(--text-3);cursor:pointer;
+}
+#mobile-search-results{
+  position:fixed;top:64px;left:0;right:0;
+  background:#fff;z-index:1001;
+  max-height:calc(100vh - 64px);overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  border-bottom:2px solid var(--gold);
+  box-shadow:0 8px 32px rgba(0,0,0,.15);
+}
+
 /* Search results dropdown */
 #search-results{
   position:absolute;top:calc(var(--nav-h) + 1px);left:0;right:0;
@@ -653,9 +696,12 @@ footer{
 .mobile-menu{
   display:none;
   position:fixed;inset:0;z-index:900;
-  background:#fff;padding:96px 32px 40px;
+  background:#fff;padding:0 32px 40px;
+  padding-top:80px;
   flex-direction:column;gap:0;
   transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .mobile-menu.open{transform:translateX(0);}
 .mobile-menu a,.mobile-menu button.mob-link{
@@ -668,8 +714,65 @@ footer{
 }
 .mobile-menu a:hover,.mobile-menu button.mob-link:hover{color:var(--gold);}
 .mobile-close{
-  position:absolute;top:20px;right:24px;
+  position:fixed;top:20px;right:24px;
   background:none;border:none;font-size:28px;color:var(--ink);
+  z-index:901;
+}
+
+/* ── STYLING PROMO BANNER ── */
+#styling-promo-banner{
+  background:linear-gradient(135deg, var(--ink) 0%, #1a1410 60%, #2a1f0e 100%);
+  position:relative;overflow:hidden;
+  border-top:1px solid rgba(184,147,90,.2);
+}
+#styling-promo-banner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 50%, rgba(184,147,90,.18) 0%, transparent 60%);
+  pointer-events:none;
+}
+.styling-promo-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:40px;padding:56px 64px;max-width:1400px;margin:0 auto;
+  position:relative;z-index:1;
+}
+.styling-promo-eyebrow{
+  font-size:10px;font-weight:500;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold-lt);margin-bottom:16px;
+}
+.styling-promo-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,4vw,52px);font-weight:400;line-height:1;
+  color:#fff;margin-bottom:20px;
+}
+.styling-promo-title em{font-style:italic;color:var(--gold-lt);}
+.styling-promo-sub{
+  font-size:14px;color:rgba(255,255,255,.55);font-weight:300;
+  line-height:1.8;max-width:460px;margin-bottom:32px;
+}
+.styling-promo-btn{
+  display:inline-block;
+  padding:14px 36px;background:var(--gold);color:#fff;border:none;
+  font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
+  transition:background .3s;cursor:pointer;
+}
+.styling-promo-btn:hover{background:var(--gold-lt);}
+.styling-promo-icons{
+  display:flex;flex-direction:column;gap:12px;flex-shrink:0;
+}
+.styling-promo-pill{
+  background:rgba(184,147,90,.12);border:1px solid rgba(184,147,90,.3);
+  padding:12px 24px;color:rgba(255,255,255,.8);
+  font-size:13px;font-weight:400;letter-spacing:.5px;
+  transition:background .25s;
+}
+#styling-promo-banner:hover .styling-promo-pill{background:rgba(184,147,90,.18);}
+@media(max-width:900px){
+  .styling-promo-inner{flex-direction:column;padding:40px 24px;gap:28px;}
+  .styling-promo-icons{flex-direction:row;flex-wrap:wrap;}
+  .styling-promo-pill{font-size:12px;padding:10px 16px;}
+}
+@media(max-width:600px){
+  .styling-promo-title{font-size:32px;}
 }
 
 /* ── RESPONSIVE ── */
@@ -685,6 +788,7 @@ footer{
   .nav-links-left,.nav-search{display:none;}
   .hamburger{display:flex;}
   .mobile-menu{display:flex;}
+  .mob-search-btn{display:flex !important;}
   #hero{grid-template-columns:1fr;}
   .hero-right{height:50vw;min-height:280px;}
   .products-grid-4{grid-template-columns:repeat(2,1fr);}
@@ -1175,6 +1279,10 @@ footer{
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         </button>
       </div>
+      <!-- Mobile search icon -->
+      <button class="mob-search-btn" id="mobSearchBtn" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </button>
       <button class="nav-icon-btn" id="cartBtn" aria-label="Cart">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="cart-badge" id="cartCount">0</span>
@@ -1190,12 +1298,16 @@ footer{
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">&times;</button>
+  <div style="padding:0 0 20px;border-bottom:1px solid var(--border);margin-bottom:8px;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:5px;color:var(--ink);text-transform:uppercase;">COLRAH<sup style="font-size:9px;font-weight:300;color:var(--text-3);">®</sup></div>
+    <div style="font-size:10px;color:var(--text-3);letter-spacing:2px;text-transform:uppercase;margin-top:2px;">Wear Confidence</div>
+  </div>
   <button class="mob-link" onclick="navigateTo('home');closeMobileMenu()">Home</button>
   <button class="mob-link" onclick="navigateTo('dresses');closeMobileMenu()">Dresses</button>
   <button class="mob-link" onclick="navigateTo('shoes');closeMobileMenu()">Shoes</button>
   <button class="mob-link" onclick="navigateTo('caps');closeMobileMenu()">Caps</button>
   <button class="mob-link" onclick="navigateTo('accessories');closeMobileMenu()">Accessories</button>
-  <button class="mob-link" onclick="navigateTo('book-styler');closeMobileMenu()">Book Styler</button>
+  <button class="mob-link" onclick="navigateTo('book-styler');closeMobileMenu()" style="color:var(--gold);">✦ Book Styler</button>
   <button class="mob-link" onclick="navigateTo('reviews');closeMobileMenu()">Reviews</button>
   <button class="mob-link" onclick="navigateTo('contact');closeMobileMenu()">Contact</button>
   <button class="mob-link" onclick="navigateTo('our-story');closeMobileMenu()">Our Story</button>
@@ -1205,6 +1317,24 @@ footer{
   <button class="mob-link" onclick="navigateTo('size-guide');closeMobileMenu()">Size Guide</button>
   <button class="mob-link" onclick="navigateTo('shipping');closeMobileMenu()">Shipping Policy</button>
   <button class="mob-link" onclick="navigateTo('returns');closeMobileMenu()">Returns &amp; Exchanges</button>
+  <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);">
+    <a href="https://wa.me/237653603986" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:#25D366;color:#fff;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Order on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- MOBILE SEARCH OVERLAY -->
+<div id="mobile-search-overlay">
+  <div style="width:100%;">
+    <div class="mob-search-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="mobSearchInput" placeholder="Search products, styles..." autocomplete="off">
+      <button class="mob-search-close" id="mobSearchClose">&times;</button>
+    </div>
+    <div id="mobile-search-results"></div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════
@@ -1232,6 +1362,24 @@ footer{
         <div class="hero-badge-label">New Collection</div>
         <div class="hero-badge-val">500+</div>
         <div class="hero-badge-sub">Unique Fashion Outfits</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STYLING PROMO BANNER -->
+  <section id="styling-promo-banner" onclick="navigateTo('book-styler')" style="cursor:pointer;">
+    <div class="styling-promo-inner">
+      <div class="styling-promo-left">
+        <div class="styling-promo-eyebrow">✦ Exclusive Service</div>
+        <h2 class="styling-promo-title">Personal Styling<br><em>Just for You</em></h2>
+        <p class="styling-promo-sub">Not sure what to wear? Our expert stylists at Colrah Fashion will curate the perfect look for your occasion, body type, and budget — completely personalised.</p>
+        <button class="styling-promo-btn" onclick="navigateTo('book-styler')">Book a Free Stylist Session →</button>
+      </div>
+      <div class="styling-promo-icons">
+        <div class="styling-promo-pill">👗 Outfit Curation</div>
+        <div class="styling-promo-pill">🎯 Occasion Dressing</div>
+        <div class="styling-promo-pill">✂️ Size & Fit Advice</div>
+        <div class="styling-promo-pill">💼 Wardrobe Planning</div>
       </div>
     </div>
   </section>
@@ -3249,6 +3397,48 @@ function switchSizeTab(tabId, btn) {
 }
 $('hamBtn').addEventListener('click', () => $('mobileMenu').classList.add('open'));
 $('mobileClose').addEventListener('click', closeMobileMenu);
+
+// ── MOBILE SEARCH ──
+$('mobSearchBtn').addEventListener('click', () => {
+  $('mobile-search-overlay').classList.add('open');
+  setTimeout(() => $('mobSearchInput').focus(), 100);
+});
+$('mobSearchClose').addEventListener('click', () => {
+  $('mobile-search-overlay').classList.remove('open');
+  $('mobSearchInput').value = '';
+  $('mobile-search-results').innerHTML = '';
+});
+$('mobile-search-overlay').addEventListener('click', (e) => {
+  if (e.target === $('mobile-search-overlay')) {
+    $('mobile-search-overlay').classList.remove('open');
+    $('mobSearchInput').value = '';
+    $('mobile-search-results').innerHTML = '';
+  }
+});
+$('mobSearchInput').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  const res = $('mobile-search-results');
+  if (q.length < 2) { res.innerHTML = ''; return; }
+  const matches = PRODUCTS.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.subcat.toLowerCase().includes(q) ||
+    p.description.toLowerCase().includes(q)
+  ).slice(0, 6);
+  if (!matches.length) {
+    res.innerHTML = `<div class="search-no-results">No results for "${this.value}"</div>`;
+  } else {
+    res.innerHTML = matches.map(p => `
+      <div class="search-result-item" onclick="showProductDetail(${p.id});$('mobile-search-overlay').classList.remove('open');$('mobSearchInput').value='';">
+        <img class="search-result-img" src="${p.image}" alt="${p.name}">
+        <div>
+          <div class="search-result-name">${p.name}</div>
+          <div class="search-result-cat">${p.subcat}</div>
+          <div class="search-result-price">${formatPrice(p.price)}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+});
 
 // ══════════════════════════════════════════
 // CART HANDLERS
